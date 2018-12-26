@@ -14,10 +14,9 @@ import com.ifast.common.utils.ShiroUtils;
 import com.ifast.sys.domain.UserDO;
 
 /**
- * 
  * <pre>
  * </pre>
- * 
+ *
  * <small> 2018年2月25日 | Aron</small>
  */
 public abstract class AdminBaseController {
@@ -44,9 +43,9 @@ public abstract class AdminBaseController {
      * <pre>
      * 自动获取分页参数，返回分页对象page
      * </pre>
-     * 
+     *
      * <small> 2018年4月15日 | Aron</small>
-     * 
+     *
      * @param e
      * @return
      */
@@ -56,11 +55,19 @@ public abstract class AdminBaseController {
         IPage<E> page = new Page<>(pageNumber, pageSize);
         //支持sort、order参数
         String sort = HttpContextUtils.getHttpServletRequest().getParameter("sort");
-        if(StringUtils.isNotBlank(sort)) {
+        if (StringUtils.isNotBlank(sort)) {
             //list_todo 这个地方需要进行完善
 //        	page.setOrderByField(sort);
 //        	String order = HttpContextUtils.getHttpServletRequest().getParameter("order");
 //        	if(StringUtils.isNotBlank(order)) page.setAsc("asc".equalsIgnoreCase(order));
+            String order = HttpContextUtils.getHttpServletRequest().getParameter("order");
+            if (StringUtils.isNotBlank(order)) {
+                if ("asc".equalsIgnoreCase(order)){
+                    ((Page<E>) page).setAsc(sort);
+                }else {
+                    ((Page<E>) page).setDesc(sort);
+                }
+            }
         }
         return page;
     }

@@ -1,7 +1,9 @@
 package com.ifast.common.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.LogDO;
@@ -34,11 +36,11 @@ public class LogController extends AdminBaseController {
     
     @ResponseBody
     @GetMapping("/list")
-    public Result<Page<LogDO>> list(LogDO logDTO) {
-    	EntityWrapper<LogDO> wrapper = logService.convertToEntityWrapper("username", logDTO.getUsername());
+    public Result<IPage<LogDO>> list(LogDO logDTO) {
+    	QueryWrapper<LogDO> wrapper = logService.convertToQueryWrapper("username", logDTO.getUsername());
     	wrapper.eq(logDTO.getUserId()!=null, "userId", logDTO.getUserId());
     	wrapper.like("operation", logDTO.getOperation());
-        Page<LogDO> page = logService.selectPage(getPage(LogDO.class), wrapper);
+        IPage<LogDO> page = logService.page(getPage(LogDO.class), wrapper);
         return Result.ok(page);
     }
     
@@ -46,7 +48,7 @@ public class LogController extends AdminBaseController {
     @ResponseBody
     @PostMapping("/remove")
     Result<String> remove(Long id) {
-        logService.deleteById(id);
+        logService.removeById(id);
         return Result.ok();
     }
     
@@ -54,7 +56,7 @@ public class LogController extends AdminBaseController {
     @ResponseBody
     @PostMapping("/batchRemove")
     Result<String> batchRemove(@RequestParam("ids[]") Long[] ids) {
-        logService.deleteBatchIds(Arrays.asList(ids));
+        logService.removeByIds(Arrays.asList(ids));
         return Result.fail();
     }
 }

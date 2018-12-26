@@ -1,6 +1,6 @@
 package com.ifast.common.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+
 import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.dao.ConfigDao;
 import com.ifast.common.domain.ConfigDO;
@@ -44,8 +44,8 @@ public class ConfigServiceImpl extends CoreServiceImpl<ConfigDao, ConfigDO> impl
     public List<ConfigDO> findListByKvType(int kvType){
         ConfigDO configDO = new ConfigDO();
         configDO.setKvType(kvType);
-        EntityWrapper<ConfigDO> ew = new EntityWrapper<>(configDO);
-        List<ConfigDO> list = super.selectList(ew);
+        QueryWrapper<ConfigDO> ew = new QueryWrapper<>(configDO);
+        List<ConfigDO> list = super.list(ew);
         return list;
     }
     

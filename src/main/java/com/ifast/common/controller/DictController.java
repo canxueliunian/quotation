@@ -1,6 +1,7 @@
 package com.ifast.common.controller;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.DictDO;
@@ -39,8 +40,8 @@ public class DictController extends AdminBaseController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("common:sysDict:sysDict")
-    public Result<Page<DictDO>> list(DictDO dictDTO) {
-        Page<DictDO> page = sysDictService.selectPage(getPage(DictDO.class), sysDictService.convertToEntityWrapper("name", dictDTO.getName(), "type", dictDTO.getType()));
+    public Result<IPage<DictDO>> list(DictDO dictDTO) {
+        IPage<DictDO> page = sysDictService.page(getPage(DictDO.class), sysDictService.convertToQueryWrapper("name", dictDTO.getName(), "type", dictDTO.getType()));
         return Result.ok(page);
     }
     
@@ -53,7 +54,7 @@ public class DictController extends AdminBaseController {
     @GetMapping("/edit/{id}")
     @RequiresPermissions("common:sysDict:edit")
     String edit(@PathVariable("id") Long id, Model model) {
-        DictDO sysDict = sysDictService.selectById(id);
+        DictDO sysDict = sysDictService.getById(id);
         model.addAttribute("sysDict", sysDict);
         return "common/sysDict/edit";
     }
@@ -66,7 +67,7 @@ public class DictController extends AdminBaseController {
     @PostMapping("/save")
     @RequiresPermissions("common:sysDict:add")
     public Result<String> save(DictDO sysDict) {
-        sysDictService.insert(sysDict);
+        sysDictService.save(sysDict);
         return Result.ok();
     }
 
@@ -90,7 +91,7 @@ public class DictController extends AdminBaseController {
     @ResponseBody
     @RequiresPermissions("common:sysDict:remove")
     public Result<String> remove(Long id) {
-        sysDictService.deleteById(id);
+        sysDictService.removeById(id);
         return Result.ok();
     }
 
@@ -102,7 +103,7 @@ public class DictController extends AdminBaseController {
     @ResponseBody
     @RequiresPermissions("common:sysDict:batchRemove")
     public Result<String> remove(@RequestParam("ids[]") Long[] ids) {
-        sysDictService.deleteBatchIds(Arrays.asList(ids));
+        sysDictService.removeByIds(Arrays.asList(ids));
         return Result.ok();
     }
     
@@ -127,7 +128,8 @@ public class DictController extends AdminBaseController {
         // 查询列表数据
         Map<String, Object> map = new HashMap<>(16);
         map.put("type", type);
-        List<DictDO> dictList = sysDictService.selectByMap(map);
+//        List<DictDO> dictList = sysDictService.listByMap(map);
+        List<DictDO> dictList = (List<DictDO>) sysDictService.listByMap(map);
         return dictList;
     }
 }

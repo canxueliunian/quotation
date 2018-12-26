@@ -1,7 +1,9 @@
 package com.ifast.common.base;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.IService;
+
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 import java.util.Map;
@@ -43,6 +45,6 @@ public interface CoreService<T> extends IService<T> {
      * @return java.util.Map<java.lang.String,java.lang.Object>
      *
      */
-    EntityWrapper<T> convertToEntityWrapper(Object... params);
+    QueryWrapper<T> convertToQueryWrapper(Object... params);
 
 }

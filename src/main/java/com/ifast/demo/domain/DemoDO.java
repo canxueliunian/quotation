@@ -1,8 +1,9 @@
 package com.ifast.demo.domain;
 
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import com.ifast.common.base.BaseDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

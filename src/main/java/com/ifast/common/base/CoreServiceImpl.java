@@ -1,8 +1,10 @@
 package com.ifast.common.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +39,7 @@ public abstract class CoreServiceImpl<M extends BaseMapper<T>, T> extends Servic
 
     @Override
     public T findOneByKv(Object... params) {
-        return selectOne(this.convertToEntityWrapper(params));
+        return getOne(this.convertToQueryWrapper(params));
     }
 
     @Override
@@ -54,8 +56,8 @@ public abstract class CoreServiceImpl<M extends BaseMapper<T>, T> extends Servic
         return map;
     }
     @Override
-    public EntityWrapper<T> convertToEntityWrapper(Object... params) {
-        EntityWrapper<T> ew = new EntityWrapper<>();
+    public QueryWrapper<T> convertToQueryWrapper(Object... params) {
+        QueryWrapper<T> ew = new QueryWrapper<>();
         if (params == null) {
             return ew;
         }

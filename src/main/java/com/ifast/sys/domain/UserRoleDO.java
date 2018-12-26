@@ -1,8 +1,10 @@
 package com.ifast.sys.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotations.TableName;
+
 
 /**
  * <pre>

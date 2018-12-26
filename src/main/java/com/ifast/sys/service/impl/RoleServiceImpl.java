@@ -42,14 +42,14 @@ public class RoleServiceImpl extends CoreServiceImpl<RoleDao, RoleDO> implements
     @Cacheable(value = DEMO_CACHE_NAME, key = ROLE_ALL_KEY)
     @Override
     public List<RoleDO> findAll() {
-        List<RoleDO> roles = selectList(null);
+        List<RoleDO> roles = list(null);
         return roles;
     }
 
     @Override
     public List<RoleDO> findListStatusByUserId(Serializable userId) {
         List<Long> rolesIds = userRoleMapper.listRoleId(userId);
-        List<RoleDO> roles = selectList(null);
+        List<RoleDO> roles = list(null);
         for (RoleDO roleDO : roles) {
             roleDO.setRoleSign("false");
             for (Long roleId : rolesIds) {
@@ -70,7 +70,7 @@ public class RoleServiceImpl extends CoreServiceImpl<RoleDao, RoleDO> implements
     @CacheEvict(value = DEMO_CACHE_NAME, key = ROLE_ALL_KEY)
     @Transactional
     @Override
-    public boolean insert(RoleDO role) {
+    public boolean save(RoleDO role) {
         int count = baseMapper.insert(role);
         List<Long> menuIds = role.getMenuIds();
         Long roleId = role.getId();
@@ -91,7 +91,7 @@ public class RoleServiceImpl extends CoreServiceImpl<RoleDao, RoleDO> implements
     @CacheEvict(value = DEMO_CACHE_NAME, key = ROLE_ALL_KEY)
     @Transactional
     @Override
-    public boolean deleteById(Serializable id) {
+    public boolean removeById(Serializable id) {
         int count = baseMapper.deleteById(id);
         roleMenuMapper.removeByRoleId(id);
         return retBool(count);

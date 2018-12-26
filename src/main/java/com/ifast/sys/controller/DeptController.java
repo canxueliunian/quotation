@@ -55,7 +55,7 @@ public class DeptController extends AdminBaseController {
         if (pId == 0) {
             model.addAttribute("pName", "总部门");
         } else {
-            model.addAttribute("pName", sysDeptService.selectById(pId).getName());
+            model.addAttribute("pName", sysDeptService.getById(pId).getName());
         }
         return prefix + "/add";
     }
@@ -63,12 +63,12 @@ public class DeptController extends AdminBaseController {
     @GetMapping("/edit/{deptId}")
     @RequiresPermissions("system:sysDept:edit")
     String edit(@PathVariable("deptId") Long deptId, Model model) {
-        DeptDO sysDept = sysDeptService.selectById(deptId);
+        DeptDO sysDept = sysDeptService.getById(deptId);
         model.addAttribute("sysDept", sysDept);
         if (Constant.Sys.DEPT_ROOT_ID.equals(sysDept.getParentId())) {
             model.addAttribute("parentDeptName", "无");
         } else {
-            DeptDO parDept = sysDeptService.selectById(sysDept.getParentId());
+            DeptDO parDept = sysDeptService.getById(sysDept.getParentId());
             model.addAttribute("parentDeptName", parDept.getName());
         }
         return prefix + "/edit";
@@ -82,7 +82,7 @@ public class DeptController extends AdminBaseController {
     @RequiresPermissions("system:sysDept:add")
     @Log("添加部门")
     public Result<String> save(DeptDO sysDept) {
-        sysDeptService.insert(sysDept);
+        sysDeptService.save(sysDept);
         return Result.ok();
     }
 
@@ -108,13 +108,13 @@ public class DeptController extends AdminBaseController {
     public Result<String> remove(Long id) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("parentId", id);
-        int size = sysDeptService.selectByMap(map).size();
+        int size = sysDeptService.listByMap(map).size();
         if (size > 0) {
             return Result.build(EnumErrorCode.deptUpdateErrorExistChilds.getCode(),
                     EnumErrorCode.deptUpdateErrorExistChilds.getMsg());
         }
         if (sysDeptService.checkDeptHasUser(id)) {
-            sysDeptService.deleteById(id);
+            sysDeptService.removeById(id);
             return Result.ok();
         } else {
             return Result.build(EnumErrorCode.deptDeleteErrorExistUsers.getCode(),
@@ -130,7 +130,7 @@ public class DeptController extends AdminBaseController {
     @RequiresPermissions("system:sysDept:batchRemove")
     @Log("删除部门")
     public Result<String> remove(@RequestParam("ids[]") Long[] deptIds) {
-        sysDeptService.deleteBatchIds(Arrays.asList(deptIds));
+        sysDeptService.removeByIds(Arrays.asList(deptIds));
         return Result.ok();
     }
 

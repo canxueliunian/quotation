@@ -3,14 +3,9 @@ package com.ifast.sys.service.impl;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -48,16 +43,17 @@ import com.ifast.sys.vo.UserVO;
 @Transactional
 @Service("sysUserServiceImpl")
 public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements UserService {
-    @Autowired
+    @Resource
     UserRoleDao userRoleMapper;
-    @Autowired
+    @Resource
     DeptDao deptMapper;
     @Autowired
     private FileService sysFileService;
 
     @Override
-    public UserDO selectById(Serializable id) {
+    public UserDO getById(Serializable id) {
         List<Long> roleIds = userRoleMapper.listRoleId(id);
+//        UserDO user = baseMapper.selectById(id);
         UserDO user = baseMapper.selectById(id);
         user.setDeptName(deptMapper.selectById(user.getDeptId()).getName());
         user.setroleIds(roleIds);
@@ -66,7 +62,7 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
 
     @Transactional
     @Override
-    public boolean insert(UserDO user) {
+    public boolean save(UserDO user) {
         int count = baseMapper.insert(user);
         Long userId = user.getId();
         List<Long> roles = user.getroleIds();
@@ -104,9 +100,10 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
     }
 
     @Override
-    public boolean deleteById(Serializable userId) {
+    public boolean removeById(Serializable userId) {
         userRoleMapper.removeByUserId(userId);
         return retBool(baseMapper.deleteById(userId));
+//        return retBool(baseMapper.deleteById(userId));
     }
 
     @Override
@@ -135,7 +132,7 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
 
     @Override
     public int adminResetPwd(UserVO userVO) {
-        UserDO userDO = selectById(userVO.getUserDO().getId());
+        UserDO userDO = getById(userVO.getUserDO().getId());
         if ("admin".equals(userDO.getUsername())) {
             throw new IFastException(EnumErrorCode.userUpdatePwd4adminNotAllowed.getCodeStr());
         }
@@ -144,13 +141,18 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
 
     }
 
-    @Transactional
     @Override
-    public boolean deleteBatchIds(List<? extends Serializable> idList) {
+    public boolean removeByIds(Collection<? extends Serializable> idList) {
         int count = baseMapper.deleteBatchIds(idList);
         userRoleMapper.deleteBatchIds(idList);
         return retBool(count);
     }
+
+    //    @Transactional
+//    @Override
+//    public boolean removeByIds(List<? extends Serializable> idList) {
+//
+//    }
 
     @Override
     public Tree<DeptDO> getTree() {
@@ -227,7 +229,7 @@ public class UserServiceImpl extends CoreServiceImpl<UserDao, UserDO> implements
         }
         Map<String, Object> result = new HashMap<>();
         FileDO sysFile = new FileDO(FileType.fileType(fileName), url, new Date());
-        if (sysFileService.insert(sysFile)) {
+        if (sysFileService.save(sysFile)) {
             UserDO userDO = new UserDO();
             userDO.setId(userId);
             userDO.setPicId(sysFile.getId());

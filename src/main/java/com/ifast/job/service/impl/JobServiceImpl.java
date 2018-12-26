@@ -1,6 +1,7 @@
 package com.ifast.job.service.impl;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import org.quartz.SchedulerException;
@@ -29,9 +30,9 @@ public class JobServiceImpl extends CoreServiceImpl<TaskDao, TaskDO> implements 
 
 
     @Override
-    public boolean deleteById(Serializable id) {
+    public boolean removeById(Serializable id) {
         try {
-            TaskDO scheduleJob = selectById(id);
+            TaskDO scheduleJob = getById(id);
             quartzManager.deleteJob(ScheduleJobUtils.entityToData(scheduleJob));
             return retBool(baseMapper.deleteById(id));
         } catch (SchedulerException e) {
@@ -42,10 +43,10 @@ public class JobServiceImpl extends CoreServiceImpl<TaskDao, TaskDO> implements 
     }
 
     @Override
-    public boolean deleteBatchIds(List<? extends Serializable> ids) {
+    public boolean removeByIds(Collection<? extends Serializable> ids) {
         for (Serializable id : ids) {
             try {
-                TaskDO scheduleJob = selectById(id);
+                TaskDO scheduleJob = getById(id);
                 quartzManager.deleteJob(ScheduleJobUtils.entityToData(scheduleJob));
             } catch (SchedulerException e) {
                 e.printStackTrace();
@@ -58,6 +59,7 @@ public class JobServiceImpl extends CoreServiceImpl<TaskDao, TaskDO> implements 
     @Override
     public void initSchedule() throws SchedulerException {
         // 这里获取任务信息数据
+//        List<TaskDO> jobList = baseMapper.list(null);
         List<TaskDO> jobList = baseMapper.selectList(null);
         for (TaskDO scheduleJob : jobList) {
             if ("1".equals(scheduleJob.getJobStatus())) {
@@ -70,7 +72,7 @@ public class JobServiceImpl extends CoreServiceImpl<TaskDao, TaskDO> implements 
 
     @Override
     public void changeStatus(Long jobId, String cmd) throws SchedulerException {
-        TaskDO scheduleJob = selectById(jobId);
+        TaskDO scheduleJob = getById(jobId);
         if (scheduleJob == null) {
             return;
         }
@@ -89,7 +91,7 @@ public class JobServiceImpl extends CoreServiceImpl<TaskDao, TaskDO> implements 
 
     @Override
     public void updateCron(Long jobId) throws SchedulerException {
-        TaskDO scheduleJob = selectById(jobId);
+        TaskDO scheduleJob = getById(jobId);
         if (scheduleJob == null) {
             return;
         }
@@ -101,7 +103,7 @@ public class JobServiceImpl extends CoreServiceImpl<TaskDao, TaskDO> implements 
 
     @Override
     public void runNowOnce(Long jobId) throws SchedulerException {
-        TaskDO scheduleJob = selectById(jobId);
+        TaskDO scheduleJob = getById(jobId);
         if (scheduleJob == null) {
             return;
         }

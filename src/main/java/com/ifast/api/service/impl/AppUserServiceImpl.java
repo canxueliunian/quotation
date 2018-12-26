@@ -88,7 +88,7 @@ public class AppUserServiceImpl extends CoreServiceImpl<UserDao, UserDO> impleme
             throw new IFastApiException(EnumErrorCode.apiAuthorizationLoggedout.getCodeStr());
         }
 
-        UserDO userDO = selectById(userId);
+        UserDO userDO = getById(userId);
 
         if(userDO == null){
             throw new IFastException(EnumErrorCode.apiAuthorizationInvalid.getCodeStr());

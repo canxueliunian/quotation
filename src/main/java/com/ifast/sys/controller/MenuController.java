@@ -37,7 +37,7 @@ public class MenuController extends AdminBaseController {
     @RequestMapping("/list")
     @ResponseBody
     List<MenuDO> list() {
-        List<MenuDO> menus = menuService.selectList(null);
+        List<MenuDO> menus = menuService.list(null);
         return menus;
     }
 
@@ -48,7 +48,7 @@ public class MenuController extends AdminBaseController {
         if (pId == 0) {
             model.addAttribute("pName", "根目录");
         } else {
-            model.addAttribute("pName", menuService.selectById(pId).getName());
+            model.addAttribute("pName", menuService.getById(pId).getName());
         }
         return prefix + "/add";
     }
@@ -56,13 +56,13 @@ public class MenuController extends AdminBaseController {
     @RequiresPermissions("sys:menu:edit")
     @GetMapping("/edit/{id}")
     String edit(Model model, @PathVariable("id") Long id) {
-        MenuDO mdo = menuService.selectById(id);
+        MenuDO mdo = menuService.getById(id);
         Long pId = mdo.getParentId();
         model.addAttribute("pId", pId);
         if (pId == 0) {
             model.addAttribute("pName", "根目录");
         } else {
-            model.addAttribute("pName", menuService.selectById(pId).getName());
+            model.addAttribute("pName", menuService.getById(pId).getName());
         }
         model.addAttribute("menu", mdo);
         return prefix + "/edit";
@@ -73,7 +73,7 @@ public class MenuController extends AdminBaseController {
     @PostMapping("/save")
     @ResponseBody
     Result<String> save(MenuDO menu) {
-        menuService.insert(menu);
+        menuService.save(menu);
         return Result.ok();
     }
 
@@ -91,7 +91,7 @@ public class MenuController extends AdminBaseController {
     @PostMapping("/remove")
     @ResponseBody
     Result<String> remove(Long id) {
-        menuService.deleteById(id);
+        menuService.removeById(id);
         return Result.ok();
     }
     

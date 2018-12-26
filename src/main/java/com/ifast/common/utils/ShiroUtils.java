@@ -15,7 +15,7 @@ public class ShiroUtils {
 			if(principal instanceof String){
 				String token = (String)principal;
 				String userId = JWTUtil.getUserId(token);
-				UserDO userDO = SpringContextHolder.getBean(AppUserService.class).selectById(userId);
+				UserDO userDO = SpringContextHolder.getBean(AppUserService.class).getById(userId);
 				return userDO;
 			}else if(principal instanceof UserDO) {
 				return (UserDO)principal;

@@ -50,7 +50,7 @@ public class RoleController extends AdminBaseController {
     @RequiresPermissions("sys:role:edit")
     @GetMapping("/edit/{id}")
     String edit(@PathVariable("id") Long id, Model model) {
-        RoleDO roleDO = roleService.selectById(id);
+        RoleDO roleDO = roleService.getById(id);
         model.addAttribute("role", roleDO);
         return prefix + "/edit";
     }
@@ -60,7 +60,7 @@ public class RoleController extends AdminBaseController {
     @PostMapping("/save")
     @ResponseBody()
     Result<String> save(RoleDO role) {
-        roleService.insert(role);
+        roleService.save(role);
         return Result.ok();
     }
 
@@ -78,7 +78,7 @@ public class RoleController extends AdminBaseController {
     @PostMapping("/remove")
     @ResponseBody()
     Result<String> save(Long id) {
-        roleService.deleteById(id);
+        roleService.removeById(id);
         return Result.ok();
     }
     
@@ -87,7 +87,7 @@ public class RoleController extends AdminBaseController {
     @PostMapping("/batchRemove")
     @ResponseBody
     Result<String> batchRemove(@RequestParam("ids[]") Long[] ids) {
-        roleService.deleteBatchIds(Arrays.asList(ids));
+        roleService.removeByIds(Arrays.asList(ids));
         return Result.ok();
     }
 }

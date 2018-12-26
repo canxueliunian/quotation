@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.DictDO;
@@ -58,9 +60,20 @@ public class UserController extends AdminBaseController {
     
     @GetMapping("/list")
     @ResponseBody
-    public Result<Page<UserDO>> list(UserDO userDTO) {
+    public Result<IPage<UserDO>> list(UserDO userDTO) {
         // 查询列表数据
-        Page<UserDO> page = userService.selectPage(getPage(UserDO.class), userService.convertToEntityWrapper("name", userDTO.getName(), "deptId", userDTO.getDeptId()));
+        IPage<UserDO> page = userService.page(getPage(UserDO.class), userService.convertToQueryWrapper("name", userDTO.getName(), "deptId", userDTO.getDeptId()));
+        return Result.ok(page);
+    }
+    @GetMapping("/list")
+    @ResponseBody
+    public Result<IPage<UserDO>> list2(UserDO userDTO) {
+        // 查询列表数据
+
+        QueryWrapper<UserDO> userDOQueryWrapper =
+                userService.convertToQueryWrapper("name", userDTO.getName(), "deptId", userDTO.getDeptId());
+        QueryWrapper q = new QueryWrapper();
+        IPage<UserDO> page = userService.page(getPage(UserDO.class),userDOQueryWrapper);
         return Result.ok(page);
     }
 
@@ -68,7 +81,7 @@ public class UserController extends AdminBaseController {
     @RequiresPermissions("sys:user:add")
     @GetMapping("/add")
     String add(Model model) {
-        List<RoleDO> roles = roleService.selectList(null);
+        List<RoleDO> roles = roleService.list(null);
         model.addAttribute("roles", roles);
         return prefix + "/add";
     }
@@ -76,7 +89,7 @@ public class UserController extends AdminBaseController {
     @RequiresPermissions("sys:user:edit")
     @GetMapping("/edit/{id}")
     String edit(Model model, @PathVariable("id") Long id) {
-        UserDO userDO = userService.selectById(id);
+        UserDO userDO = userService.getById(id);
         model.addAttribute("user", userDO);
         List<RoleDO> roles = roleService.findListStatusByUserId(id);
         model.addAttribute("roles", roles);
@@ -89,7 +102,7 @@ public class UserController extends AdminBaseController {
     @ResponseBody
     Result<String> save(UserDO user) {
         user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
-        userService.insert(user);
+        userService.save(user);
         return Result.ok();
     }
 
@@ -116,7 +129,8 @@ public class UserController extends AdminBaseController {
     @PostMapping("/remove")
     @ResponseBody
     Result<String> remove(Long id) {
-        userService.deleteById(id);
+//        userService.removeById(id);
+        userService.removeById(id);
         return Result.ok();
     }
 
@@ -125,7 +139,8 @@ public class UserController extends AdminBaseController {
     @PostMapping("/batchRemove")
     @ResponseBody
     Result<String> batchRemove(@RequestParam("ids[]") Long[] userIds) {
-        userService.deleteBatchIds(Arrays.asList(userIds));
+//        userService.removeByIds(Arrays.asList(userIds));
+        userService.removeByIds(Arrays.asList(userIds));
         return Result.ok();
     }
     
@@ -178,7 +193,7 @@ public class UserController extends AdminBaseController {
     
     @GetMapping("/personal")
     String personal(Model model) {
-        UserDO userDO = userService.selectById(getUserId());
+        UserDO userDO = userService.getById(getUserId());
         model.addAttribute("user", userDO);
         List<DictDO> hobbyList = dictService.getHobbyList(userDO);
         model.addAttribute("hobbyList", hobbyList);

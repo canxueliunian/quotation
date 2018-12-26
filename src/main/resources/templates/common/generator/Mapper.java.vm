@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import ${package}.entity.${className};
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
 
 /**
  * 

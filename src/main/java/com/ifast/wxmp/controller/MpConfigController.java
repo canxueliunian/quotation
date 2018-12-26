@@ -1,8 +1,11 @@
 package com.ifast.wxmp.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+
+
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpConfigDO;
@@ -37,9 +40,9 @@ public class MpConfigController extends AdminBaseController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("wxmp:mpConfig:mpConfig")
-    public Result<Page<MpConfigDO>> list(MpConfigDO mpConfigDTO) {
-        Wrapper<MpConfigDO> wrapper = new EntityWrapper<MpConfigDO>(mpConfigDTO);
-        Page<MpConfigDO> page = mpConfigService.selectPage(getPage(MpConfigDO.class), wrapper);
+    public Result<IPage<MpConfigDO>> list(MpConfigDO mpConfigDTO) {
+        Wrapper<MpConfigDO> wrapper = new QueryWrapper<MpConfigDO>(mpConfigDTO);
+        IPage<MpConfigDO> page = mpConfigService.page(getPage(MpConfigDO.class), wrapper);
         return Result.ok(page);
     }
     
@@ -52,7 +55,7 @@ public class MpConfigController extends AdminBaseController {
     @GetMapping("/edit/{id}")
     @RequiresPermissions("wxmp:mpConfig:edit")
     String edit(@PathVariable("id") Integer id, Model model) {
-        MpConfigDO mpConfig = mpConfigService.selectById(id);
+        MpConfigDO mpConfig = mpConfigService.getById(id);
         model.addAttribute("mpConfig", mpConfig);
         return "wxmp/mpConfig/edit";
     }
@@ -65,7 +68,7 @@ public class MpConfigController extends AdminBaseController {
     @RequiresPermissions("wxmp:mpConfig:add")
     public Result<String> save(MpConfigDO mpConfig) {
         mpConfig.setCreateTime(new Date());
-        mpConfigService.insert(mpConfig);
+        mpConfigService.save(mpConfig);
         return Result.ok();
     }
     
@@ -87,7 +90,7 @@ public class MpConfigController extends AdminBaseController {
     @ResponseBody
     @RequiresPermissions("wxmp:mpConfig:remove")
     public Result<String> remove(Integer id) {
-        mpConfigService.deleteById(id);
+        mpConfigService.removeById(id);
         return Result.ok();
     }
     
@@ -98,7 +101,7 @@ public class MpConfigController extends AdminBaseController {
     @ResponseBody
     @RequiresPermissions("wxmp:mpConfig:batchRemove")
     public Result<String> remove(@RequestParam("ids[]") Integer[] ids) {
-        mpConfigService.deleteBatchIds(Arrays.asList(ids));
+        mpConfigService.removeByIds(Arrays.asList(ids));
         return Result.ok();
     }
     

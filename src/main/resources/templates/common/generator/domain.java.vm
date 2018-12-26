@@ -7,8 +7,8 @@ import java.util.Date;
 import java.math.BigDecimal;
 #end
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import com.ifast.common.base.BaseDO;
 
 import lombok.Data;

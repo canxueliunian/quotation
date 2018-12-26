@@ -1,8 +1,10 @@
 package com.ifast.wxmp.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
 import com.ifast.wxmp.domain.MpFansDO;
@@ -36,9 +38,9 @@ public class MpFansController extends AdminBaseController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("wxmp:mpFans:mpFans")
-    public Result<Page<MpFansDO>> list(MpFansDO mpFansDTO) {
-        Wrapper<MpFansDO> wrapper = new EntityWrapper<MpFansDO>(mpFansDTO);
-        Page<MpFansDO> page = mpFansService.selectPage(getPage(MpFansDO.class), wrapper);
+    public Result<IPage<MpFansDO>> list(MpFansDO mpFansDTO) {
+        Wrapper<MpFansDO> wrapper = new QueryWrapper<MpFansDO>(mpFansDTO);
+        IPage<MpFansDO> page = mpFansService.page(getPage(MpFansDO.class), wrapper);
         return Result.ok(page);
     }
     
@@ -51,7 +53,7 @@ public class MpFansController extends AdminBaseController {
     @GetMapping("/edit/{id}")
     @RequiresPermissions("wxmp:mpFans:edit")
     String edit(@PathVariable("id") Long id, Model model) {
-        MpFansDO mpFans = mpFansService.selectById(id);
+        MpFansDO mpFans = mpFansService.getById(id);
         model.addAttribute("mpFans", mpFans);
         return "wxmp/mpFans/edit";
     }
@@ -63,7 +65,7 @@ public class MpFansController extends AdminBaseController {
     @PostMapping("/save")
     @RequiresPermissions("wxmp:mpFans:add")
     public Result<String> save(MpFansDO mpFans) {
-        mpFansService.insert(mpFans);
+        mpFansService.save(mpFans);
         return Result.ok();
     }
     
@@ -85,7 +87,7 @@ public class MpFansController extends AdminBaseController {
     @ResponseBody
     @RequiresPermissions("wxmp:mpFans:remove")
     public Result<String> remove(Long id) {
-        mpFansService.deleteById(id);
+        mpFansService.removeById(id);
         return Result.ok();
     }
     
@@ -96,7 +98,7 @@ public class MpFansController extends AdminBaseController {
     @ResponseBody
     @RequiresPermissions("wxmp:mpFans:batchRemove")
     public Result<String> remove(@RequestParam("ids[]") Long[] ids) {
-        mpFansService.deleteBatchIds(Arrays.asList(ids));
+        mpFansService.removeByIds(Arrays.asList(ids));
         return Result.ok();
     }
     

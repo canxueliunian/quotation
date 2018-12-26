@@ -1,12 +1,14 @@
 package com.ifast.common.base;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.baomidou.mybatisplus.plugins.Page;
+//import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ifast.common.utils.HttpContextUtils;
 import com.ifast.common.utils.ShiroUtils;
 import com.ifast.sys.domain.UserDO;
@@ -48,16 +50,17 @@ public abstract class AdminBaseController {
      * @param e
      * @return
      */
-    public <E> Page<E> getPage(Class<E> e) {
+    public <E> IPage<E> getPage(Class<E> e) {
         int pageNumber = getParaToInt("pageNumber", 1);
         int pageSize = getParaToInt("pageSize", 10);
-        Page<E> page = new Page<>(pageNumber, pageSize);
+        IPage<E> page = new Page<>(pageNumber, pageSize);
         //支持sort、order参数
         String sort = HttpContextUtils.getHttpServletRequest().getParameter("sort");
         if(StringUtils.isNotBlank(sort)) {
-        	page.setOrderByField(sort);
-        	String order = HttpContextUtils.getHttpServletRequest().getParameter("order");
-        	if(StringUtils.isNotBlank(order)) page.setAsc("asc".equalsIgnoreCase(order));
+            //list_todo 这个地方需要进行完善
+//        	page.setOrderByField(sort);
+//        	String order = HttpContextUtils.getHttpServletRequest().getParameter("order");
+//        	if(StringUtils.isNotBlank(order)) page.setAsc("asc".equalsIgnoreCase(order));
         }
         return page;
     }

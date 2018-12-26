@@ -1,10 +1,11 @@
 package com.ifast.common.config;
 
+import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor;
-import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
+
 
 @Configuration
 public class MyBatisConfiguration {
@@ -64,7 +65,7 @@ public class MyBatisConfiguration {
 //            public boolean doFilter(MetaObject metaObject) {
 //                MappedStatement ms = PluginUtils.getMappedStatement(metaObject);
 //                // 过滤自定义查询此时无租户信息约束【 麻花藤 】出现
-//                if ("com.baomidou.springboot.mapper.UserMapper.selectListBySQL".equals(ms.getId())) {
+//                if ("com.baomidou.springboot.mapper.UserMapper.listBySQL".equals(ms.getId())) {
 //                    return true;
 //                }
 //                return false;

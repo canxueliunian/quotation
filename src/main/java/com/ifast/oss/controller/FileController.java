@@ -1,8 +1,11 @@
 package com.ifast.oss.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+
+
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.type.EnumErrorCode;
@@ -42,9 +45,9 @@ public class FileController extends AdminBaseController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("oss:file:list")
-    public Result<Page<FileDO>> list(FileDO fileDTO) {
-        Wrapper<FileDO> wrapper = new EntityWrapper<FileDO>(fileDTO);
-        Page<FileDO> page = sysFileService.selectPage(getPage(FileDO.class), wrapper);
+    public Result<IPage<FileDO>> list(FileDO fileDTO) {
+        Wrapper<FileDO> wrapper = new QueryWrapper<FileDO>(fileDTO);
+        IPage<FileDO> page = sysFileService.page(getPage(FileDO.class), wrapper);
         return Result.ok(page);
     }
     
@@ -57,7 +60,7 @@ public class FileController extends AdminBaseController {
     @GetMapping("/edit")
     @RequiresPermissions("oss:file:update")
     String edit(Long id, Model model) {
-        FileDO sysFile = sysFileService.selectById(id);
+        FileDO sysFile = sysFileService.getById(id);
         model.addAttribute("sysFile", sysFile);
         return "common/sysFile/edit";
     }
@@ -68,7 +71,7 @@ public class FileController extends AdminBaseController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("oss:file:info")
     public Result<FileDO> info(@PathVariable("id") Long id) {
-        FileDO sysFile = sysFileService.selectById(id);
+        FileDO sysFile = sysFileService.getById(id);
         return Result.ok(sysFile);
     }
     
@@ -80,7 +83,7 @@ public class FileController extends AdminBaseController {
     @PostMapping("/save")
     @RequiresPermissions("oss:file:add")
     public Result<String> save(FileDO sysFile) {
-        sysFileService.insert(sysFile);
+        sysFileService.save(sysFile);
         return Result.ok();
     }
     
@@ -103,7 +106,7 @@ public class FileController extends AdminBaseController {
     @ResponseBody
     @RequiresPermissions("oss:file:remove")
     public Result<String> remove(Long id) {
-        sysFileService.deleteById(id);
+        sysFileService.removeById(id);
         return Result.ok();
     }
     
@@ -115,7 +118,7 @@ public class FileController extends AdminBaseController {
     @ResponseBody
     @RequiresPermissions("oss:file:remove")
     public Result<String> remove(@RequestParam("ids[]") Long[] ids) {
-        sysFileService.deleteBatchIds(Arrays.asList(ids));
+        sysFileService.removeByIds(Arrays.asList(ids));
         return Result.ok();
     }
     

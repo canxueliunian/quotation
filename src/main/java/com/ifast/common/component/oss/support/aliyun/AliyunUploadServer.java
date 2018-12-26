@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.core.toolkit.SystemClock;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -14,7 +15,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
-import com.baomidou.mybatisplus.toolkit.SystemClock;
+//import com.baomidou.mybatisplus.toolkit.SystemClock;
 import com.ifast.common.exception.IFastException;
 import com.ifast.common.type.EnumErrorCode;
 import com.ifast.common.component.oss.support.UploadServer;

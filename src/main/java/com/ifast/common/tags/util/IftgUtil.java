@@ -47,7 +47,7 @@ public class IftgUtil {
 
         Map<String, Object> map = new HashMap<>(16);
         map.put("type", dicType);
-        List<DictDO> dictDOS = dictService.selectByMap(map);
+        List<DictDO> dictDOS = (List<DictDO>) dictService.listByMap(map);
         List<ValueVO> options = parseToValues(dictDOS, selectedValue);
         return options;
     }
@@ -59,6 +59,7 @@ public class IftgUtil {
 
     /**
      * 获取标签对应值
+     *
      * @param arguments     thymeleaf 上下文对象
      * @param element       当前节点对象
      * @param attributeName 属性名
@@ -81,7 +82,7 @@ public class IftgUtil {
             resp = (List<String>) (result);
             return resp;
         } else {
-            if(Objects.nonNull(result)){
+            if (Objects.nonNull(result)) {
                 resp.add(result.toString());
             }
             return resp;
@@ -92,6 +93,7 @@ public class IftgUtil {
 
     /**
      * 获取option 的值
+     *
      * @param arguments     thymeleaf 上下文对象
      * @param element       当前节点对象
      * @param attributeName 属性名

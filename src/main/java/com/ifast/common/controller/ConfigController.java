@@ -1,6 +1,7 @@
 package com.ifast.common.controller;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.domain.ConfigDO;
@@ -37,8 +38,8 @@ public class ConfigController extends AdminBaseController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("common:config:config")
-    public Result<Page<ConfigDO>> list(ConfigDO configDTO) {
-        Page<ConfigDO> page = configService.selectPage(getPage(ConfigDO.class), configService.convertToEntityWrapper("k", configDTO.getK()));
+    public Result<IPage<ConfigDO>> list(ConfigDO configDTO) {
+        IPage<ConfigDO> page = configService.page(getPage(ConfigDO.class), configService.convertToQueryWrapper("k", configDTO.getK()));
         return Result.ok(page);
     }
     
@@ -51,7 +52,7 @@ public class ConfigController extends AdminBaseController {
     @GetMapping("/edit/{id}")
     @RequiresPermissions("common:config:edit")
     String edit(@PathVariable("id") Long id, Model model) {
-        ConfigDO config = configService.selectById(id);
+        ConfigDO config = configService.getById(id);
         model.addAttribute("config", config);
         return "common/config/edit";
     }
@@ -64,7 +65,7 @@ public class ConfigController extends AdminBaseController {
     @PostMapping("/save")
     @RequiresPermissions("common:config:add")
     public Result<String> save(ConfigDO config) {
-        if (configService.insert(config)) {
+        if (configService.save(config)) {
             return Result.ok();
         }
         return Result.fail();
@@ -90,7 +91,7 @@ public class ConfigController extends AdminBaseController {
     @ResponseBody
     @RequiresPermissions("common:config:remove")
     public Result<String> remove(Long id) {
-        configService.deleteById(id);
+        configService.removeById(id);
         return Result.ok();
     }
 
@@ -102,7 +103,7 @@ public class ConfigController extends AdminBaseController {
     @ResponseBody
     @RequiresPermissions("common:config:batchRemove")
     public Result<String> remove(@RequestParam("ids[]") Long[] ids) {
-        configService.deleteBatchIds(Arrays.asList(ids));
+        configService.removeByIds(Arrays.asList(ids));
         return Result.ok();
     }
 

@@ -1,8 +1,11 @@
 package com.ifast.job.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+
+
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.common.utils.Result;
@@ -35,9 +38,9 @@ public class JobController extends AdminBaseController {
 
     @ResponseBody
     @GetMapping("/list")
-    public Result<Page<TaskDO>> list(TaskDO taskDTO) {
-        Wrapper<TaskDO> wrapper = new EntityWrapper<TaskDO>(taskDTO);
-        Page<TaskDO> page = taskScheduleJobService.selectPage(getPage(TaskDO.class), wrapper);
+    public Result<IPage<TaskDO>> list(TaskDO taskDTO) {
+        Wrapper<TaskDO> wrapper = new QueryWrapper<TaskDO>(taskDTO);
+        IPage<TaskDO> page = taskScheduleJobService.page(getPage(TaskDO.class), wrapper);
         return Result.ok(page);
     }
 
@@ -48,7 +51,7 @@ public class JobController extends AdminBaseController {
 
     @GetMapping("/edit/{id}")
     String edit(@PathVariable("id") Long id, Model model) {
-        TaskDO job = taskScheduleJobService.selectById(id);
+        TaskDO job = taskScheduleJobService.getById(id);
         model.addAttribute("job", job);
         return "common/job/edit";
     }
@@ -60,7 +63,7 @@ public class JobController extends AdminBaseController {
     @ResponseBody
     @PostMapping("/save")
     public Result<String> save(TaskDO taskScheduleJob) {
-        taskScheduleJobService.insert(taskScheduleJob);
+        taskScheduleJobService.save(taskScheduleJob);
         return Result.ok();
     }
 
@@ -82,7 +85,7 @@ public class JobController extends AdminBaseController {
     @PostMapping("/remove")
     @ResponseBody
     public Result<String> remove(Long id) {
-        taskScheduleJobService.deleteById(id);
+        taskScheduleJobService.removeById(id);
         return Result.ok();
     }
 
@@ -93,7 +96,7 @@ public class JobController extends AdminBaseController {
     @PostMapping("/batchRemove")
     @ResponseBody
     public Result<String> remove(@RequestParam("ids[]") Long[] ids) {
-        taskScheduleJobService.deleteBatchIds(Arrays.asList(ids));
+        taskScheduleJobService.removeByIds(Arrays.asList(ids));
 
         return Result.ok();
     }

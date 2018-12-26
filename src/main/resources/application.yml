@@ -33,16 +33,18 @@ spring:
     restart:
       enabled: true
 mybatis-plus:
-  mapper-locations: classpath:/mapper/**/*Mapper.xml
-  typeAliasesPackage: com.ifast.**.domain
+#  mapper-locations: classpath:/mapper/**/*Mapper.xml
+#  typeAliasesPackage: com.ifast.**.domain
   global-config:
     id-type: 2
     field-strategy: 1
     db-column-underline: false
     capital-mode: false
-    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+
+#    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
     logic-not-delete-value: 0
     logic-delete-value: 1
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
+  config-location:

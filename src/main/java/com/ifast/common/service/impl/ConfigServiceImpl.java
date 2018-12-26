@@ -1,6 +1,7 @@
 package com.ifast.common.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ifast.common.base.CoreServiceImpl;
 import com.ifast.common.dao.ConfigDao;
 import com.ifast.common.domain.ConfigDO;
@@ -22,7 +23,8 @@ public class ConfigServiceImpl extends CoreServiceImpl<ConfigDao, ConfigDO> impl
     public ConfigDO getByKey(String k) {
         ConfigDO entity = new ConfigDO();
         entity.setK(k);
-        return baseMapper.selectOne(entity);
+        QueryWrapper<ConfigDO> queryWrapper = new QueryWrapper<>();
+        return baseMapper.selectOne(queryWrapper);
     }
     
     @Override

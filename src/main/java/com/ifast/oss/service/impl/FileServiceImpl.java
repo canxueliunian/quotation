@@ -42,7 +42,7 @@ public class FileServiceImpl extends CoreServiceImpl<FileDao, FileDO> implements
 //                + "/" + fileName;
         String url = uploader.upload(uploadBytes, fileName);
         FileDO sysFile = new FileDO(FileType.fileType(fileName), url, new Date());
-        super.insert(sysFile);
+        super.save(sysFile);
         return url;
     }
 }

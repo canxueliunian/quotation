@@ -58,13 +58,13 @@ public class UserController extends AdminBaseController {
         return prefix + "/user";
     }
     
-    @GetMapping("/list")
-    @ResponseBody
-    public Result<IPage<UserDO>> list(UserDO userDTO) {
-        // 查询列表数据
-        IPage<UserDO> page = userService.page(getPage(UserDO.class), userService.convertToQueryWrapper("name", userDTO.getName(), "deptId", userDTO.getDeptId()));
-        return Result.ok(page);
-    }
+//    @GetMapping("/list")
+//    @ResponseBody
+//    public Result<IPage<UserDO>> list(UserDO userDTO) {
+//        // 查询列表数据
+//        IPage<UserDO> page = userService.page(getPage(UserDO.class), userService.convertToQueryWrapper("name", userDTO.getName(), "deptId", userDTO.getDeptId()));
+//        return Result.ok(page);
+//    }
     @GetMapping("/list")
     @ResponseBody
     public Result<IPage<UserDO>> list2(UserDO userDTO) {

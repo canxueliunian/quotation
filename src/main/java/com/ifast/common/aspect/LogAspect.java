@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -38,7 +39,7 @@ import com.ifast.sys.domain.UserDO;
 @Aspect
 @Component
 public class LogAspect {
-    @Autowired
+    @Resource
     private LogDao logMapper;
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -92,7 +93,7 @@ public class LogAspect {
     	return result;
     }
     
-    @Pointcut("within(com.baomidou.mybatisplus.mapper.BaseMapper+)")
+    @Pointcut("within(com.baomidou.mybatisplus.core.mapper.BaseMapper+)")
     public void logMapper(){}
     
     /** 记录mapper所有接口日志，设置createBy和updateBy基础字段，logback会记录sql，这里记录查库返回对象 */

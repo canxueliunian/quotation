@@ -94,4 +94,10 @@ public class DateUtils {
         r += "前";
         return r;
     }
+    public static final String parseDateToStr(final String format, final Date date)
+    {
+        return new SimpleDateFormat(format).format(date);
+    }
+
+
 }

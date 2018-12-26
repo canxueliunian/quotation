@@ -13,6 +13,8 @@ import com.ifast.common.base.BaseDO;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.ifast.common.annotation;
+
 
 /**
  * 
@@ -27,10 +29,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=true) 
 public class ${className}DO extends BaseDO {
 	@TableId
+	@Excel(name = "id")
 	private Long id;
 #foreach ($column in $columns)
 #if ($column.attrname != $pk.attrname)
     /** $column.comments */
+	@Excel(name = "${field.comment}")
     private $column.attrType $column.attrname;
 #end
 

@@ -66,6 +66,7 @@ public abstract class AdminBaseController {
                     ((Page<E>) page).setAsc(sort);
                 }else {
                     ((Page<E>) page).setDesc(sort);
+
                 }
             }
         }

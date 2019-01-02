@@ -60,11 +60,11 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://112.74.36.154:3306/ifast-new2?useUnicode=true&useSSL=false
+    url: jdbc:mysql://192.168.10.18:3306/quotation_system?useUnicode=true&useSSL=false
     # 推荐utf8mb4编码以便支持表情字符，sys_log记录系统数据变动需要支持utf8mb4
     connectionInitSqls: SET NAMES utf8mb4;
     username: root
-    password: 12345
+    password: 123456
     initialSize: 1
     minIdle: 3
     maxActive: 20

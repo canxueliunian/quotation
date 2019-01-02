@@ -23,7 +23,7 @@ public class ConfigServiceImpl extends CoreServiceImpl<ConfigDao, ConfigDO> impl
     public ConfigDO getByKey(String k) {
         ConfigDO entity = new ConfigDO();
         entity.setK(k);
-        QueryWrapper<ConfigDO> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<ConfigDO> queryWrapper = new QueryWrapper<>(entity);
         return baseMapper.selectOne(queryWrapper);
     }
     

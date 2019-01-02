@@ -43,12 +43,16 @@ public class LoginController extends AdminBaseController {
 
     @GetMapping({ "/index" })
     String index(Model model) {
+        try{
         List<Tree<MenuDO>> menus = menuService.listMenuTree(getUserId());
         model.addAttribute("menus", menus);
         model.addAttribute("name", getUser().getName());
         model.addAttribute("username", getUser().getUsername());
         FileDO fileDO = fileService.getById(getUser().getPicId());
         model.addAttribute("picUrl", fileDO == null ? "/img/photo_s.jpg" : fileDO.getUrl());
+    }catch (Exception e){
+            e.printStackTrace();
+        }
         return "index_v1";
     }
 

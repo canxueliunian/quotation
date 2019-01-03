@@ -3,6 +3,7 @@ package com.ifast.quotation.domain;
 import java.util.Date;
 import java.math.BigDecimal;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -14,7 +15,6 @@ import com.ifast.common.annotation.*;
 
 
 /**
- * 
  * <pre>
  * 条目表
  * </pre>
@@ -23,38 +23,51 @@ import com.ifast.common.annotation.*;
 @Data
 @SuppressWarnings("serial")
 @TableName("db_item")
-@EqualsAndHashCode(callSuper=true) 
+@EqualsAndHashCode(callSuper = true)
 public class ItemDO extends BaseDO {
-	@TableId
-	@Excel(name = "id")
-	private Long id;
+    @TableId
+    @Excel(name = "id")
+    private Long id;
 
-    /** 项目名称 */
-	@Excel(name = "${field.comment}")
+    /**
+     * 项目名称
+     */
+    @Excel(name = "${field.comment}")
     private String itemname;
 
-    /** 项目类型 */
-	@Excel(name = "${field.comment}")
+    /**
+     * 项目类型
+     */
+    @Excel(name = "${field.comment}")
     private Integer packagetype;
 
-    /** 花费时间 */
-	@Excel(name = "${field.comment}")
+    /**
+     * 花费时间
+     */
+    @Excel(name = "${field.comment}")
     private Double spendtime;
 
-    /** 花费金额 */
-	@Excel(name = "${field.comment}")
+    /**
+     * 花费金额
+     */
+    @Excel(name = "${field.comment}")
     private BigDecimal spendpay;
 
-    /** 状态 */
-	@Excel(name = "${field.comment}")
+    /**
+     * 状态
+     */
+    @Excel(name = "${field.comment}")
     private Integer status;
 
     /**  */
-	@Excel(name = "${field.comment}")
+    @Excel(name = "${field.comment}")
     private Date gmtcreate;
 
     /**  */
-	@Excel(name = "${field.comment}")
+    @Excel(name = "${field.comment}")
     private Date gmtmodify;
+
+    @TableField(exist = false)
+    private Long entryId;
 
 }

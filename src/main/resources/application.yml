@@ -36,15 +36,18 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/**/*Mapper.xml
   typeAliasesPackage: com.ifast.**.domain
   global-config:
-    id-type: 0
-    field-strategy: 1
-    db-column-underline: false
-    capital-mode: false
-
-#    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
-    logic-not-delete-value: 0
-    logic-delete-value: 1
+#    db-column-underline: false
+    db-config:
+      id-type: auto
+      field-strategy: default
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      capital-mode: false
+      db-type: mysql
+      column-underline: false
+#      column-like: true
+    refresh: true
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
-  config-location:
+

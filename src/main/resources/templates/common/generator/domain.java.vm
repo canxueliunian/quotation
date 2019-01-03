@@ -13,7 +13,7 @@ import com.ifast.common.base.BaseDO;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.ifast.common.annotation;
+import com.ifast.common.annotation.*;
 
 
 /**

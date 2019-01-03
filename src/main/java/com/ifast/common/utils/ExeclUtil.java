@@ -16,24 +16,56 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.ifast.common.annotation.Excel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import jxl.Sheet;
-import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
-
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
+
 
 public class ExeclUtil {
     static int sheetsize = 5000;
+    // 红色标注样式
+    public HSSFFont redHssfFont;
+    public HSSFCellStyle cellStyle;
+
+    // 样式文件
+    public  HSSFWorkbook getWorkBook(){
+        HSSFWorkbook workbook =new HSSFWorkbook();
+        // 创建红色字体样式
+        redHssfFont= workbook.createFont();
+        redHssfFont.setColor(HSSFFont.COLOR_RED);
+        // 创建cellStyle
+
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setFont(redHssfFont);
+        cellStyle.setFillForegroundColor(HSSFColorPredefined.YELLOW.getIndex());
+        return  workbook;
+
+    }
 
     /**
      * 表结构的内容及列字段由map传入
@@ -53,7 +85,7 @@ public class ExeclUtil {
     /**
      * 表结构的内容由属性list,传入, 对应列名称解析注解获得.
      */
-    public static<T> void ListToHttp(List<T> data, List<String> fields, String sheetName, String fileName, HttpServletResponse response) throws Exception {
+    public static <T> void ListToHttp(List<T> data, List<String> fields, String sheetName, String fileName, HttpServletResponse response) throws Exception {
 
         fileName = fileName + ".xls";
         response.setContentType("application/octet-stream");
@@ -66,7 +98,7 @@ public class ExeclUtil {
     /**
      * 表结构内容及列名类中全部属性解析, 内容从@Excel中解析获得
      */
-    public static<T> void ListToHttp(List<T> data, String sheetName, String fileName, HttpServletResponse response) throws Exception {
+    public static <T> void ListToHttp(List<T> data, String sheetName, String fileName, HttpServletResponse response) throws Exception {
 
         fileName = fileName + ".xls";
         response.setContentType("application/octet-stream");
@@ -79,7 +111,7 @@ public class ExeclUtil {
     /**
      * 全属性解析
      */
-    private static<T> void List2ExeclAll(List<T> data, ServletOutputStream out, String sheetName) throws Exception {
+    private static <T> void List2ExeclAll(List<T> data, ServletOutputStream out, String sheetName) throws Exception {
         Map<String, String> fields = new HashMap<String, String>();
         HSSFWorkbook workbook = new HSSFWorkbook();
         // 如果导入数据为空，则抛出异常。
@@ -101,7 +133,7 @@ public class ExeclUtil {
 
         // 得到所有field并存放到一个list中.
         for (Field field : allFields) {
-           if (field.isAnnotationPresent(Excel.class)) {
+            if (field.isAnnotationPresent(Excel.class)) {
                 egtitlesList.add(field.getName());
                 Excel annotation = field.getAnnotation(Excel.class);
                 String name = annotation.name();
@@ -170,7 +202,7 @@ public class ExeclUtil {
                         } else {
                             cell.setCellType(Cell.CELL_TYPE_STRING);
                             // 如果数据存在就填入,不存在填入空格.
-                            cell.setCellValue(clumnValue==null ? annotation.defaultValue() : clumnValue + annotation.suffix());
+                            cell.setCellValue(clumnValue == null ? annotation.defaultValue() : clumnValue + annotation.suffix());
                         }
                     } else {
                         // 直接设置值
@@ -275,7 +307,7 @@ public class ExeclUtil {
                         } else {
                             cell.setCellType(Cell.CELL_TYPE_STRING);
                             // 如果数据存在就填入,不存在填入空格.
-                            cell.setCellValue(clumnValue==null ? annotation.defaultValue() : clumnValue + annotation.suffix());
+                            cell.setCellValue(clumnValue == null ? annotation.defaultValue() : clumnValue + annotation.suffix());
                         }
                     } else {
                         // 直接设置值
@@ -372,7 +404,7 @@ public class ExeclUtil {
                     } else {
                         cell.setCellType(Cell.CELL_TYPE_STRING);
                         // 如果数据存在就填入,不存在填入空格.
-                        cell.setCellValue(o==null? annotation.defaultValue() : o + annotation.suffix());
+                        cell.setCellValue(o == null ? annotation.defaultValue() : o + annotation.suffix());
                     }
                 }
                 rownum++;
@@ -565,55 +597,55 @@ public class ExeclUtil {
     private final static Log logger = LogFactory.getLog(ExeclUtil.class);
 
     public static void mergeExcel(String outputFileName, String... inputFileNameArray) {
-        if (inputFileNameArray.length == 1) {
-            logger.info("至少需要两个文件才能合并,请验证!!!");
-            return;
-        }
-        try {
-            WritableWorkbook outputExcel = Workbook.createWorkbook(new File(outputFileName));
-            int index = 0;
-            for (String fileName : inputFileNameArray) {
-                // 创建excel文件的工作簿对象book
-                Workbook inputExcel = Workbook.getWorkbook(new FileInputStream(fileName));
-                // 获取excel文件工作簿的工作表数量sheets
-                Sheet[] sheets = inputExcel.getSheets();
-                for (Sheet sheet : sheets) {
-                    WritableSheet writableSheet = outputExcel.createSheet(sheet.getName(), index);
-                    copy(sheet, writableSheet);
-                    index++;
-                }
-            }
-/** **********将以上缓存中的内容写到EXCEL文件中******** */
-            outputExcel.write();
-/** *********关闭文件************* */
-            outputExcel.close();
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            logger.error(sw.toString());
-        }
+//        if (inputFileNameArray.length == 1) {
+//            logger.info("至少需要两个文件才能合并,请验证!!!");
+//            return;
+//        }
+//        try {
+//            WritableWorkbook outputExcel = Workbook.createWorkbook(new File(outputFileName));
+//            int index = 0;
+//            for (String fileName : inputFileNameArray) {
+//                // 创建excel文件的工作簿对象book
+//                Workbook inputExcel = Workbook.getWorkbook(new FileInputStream(fileName));
+//                // 获取excel文件工作簿的工作表数量sheets
+//                Sheet[] sheets = inputExcel.getSheets();
+//                for (Sheet sheet : sheets) {
+//                    WritableSheet writableSheet = outputExcel.createSheet(sheet.getName(), index);
+//                    copy(sheet, writableSheet);
+//                    index++;
+//                }
+//            }
+///** **********将以上缓存中的内容写到EXCEL文件中******** */
+//            outputExcel.write();
+///** *********关闭文件************* */
+//            outputExcel.close();
+//        } catch (Exception e) {
+//            StringWriter sw = new StringWriter();
+//            PrintWriter pw = new PrintWriter(sw);
+//            e.printStackTrace(pw);
+//            logger.error(sw.toString());
+//        }
     }
 
     private static void copy(Sheet formSheet, WritableSheet toWritableSheet) {
-// 行数
-        int rows = formSheet.getRows();
-// 列数
-        int columns = formSheet.getColumns();
-        for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
-            for (int columnIndex = 0; columnIndex < columns; columnIndex++) {
-// 获取当前工作表.row_index,column_index单元格的cell对象
-                jxl.Cell cell = formSheet.getCell(columnIndex, rowIndex);
-                try {
-                    toWritableSheet.addCell(new Label(rowIndex, columnIndex, cell.getContents(), cell.getCellFormat()));
-                } catch (Exception e) {
-                    StringWriter sw = new StringWriter();
-                    PrintWriter pw = new PrintWriter(sw);
-                    e.printStackTrace(pw);
-                    logger.error(sw.toString());
-                }
-            }
-        }
+//// 行数
+//        int rows = formSheet.getRows();
+//// 列数
+//        int columns = formSheet.getColumns();
+//        for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
+//            for (int columnIndex = 0; columnIndex < columns; columnIndex++) {
+//// 获取当前工作表.row_index,column_index单元格的cell对象
+//                jxl.Cell cell = formSheet.getCell(columnIndex, rowIndex);
+//                try {
+//                    toWritableSheet.addCell(new Label(rowIndex, columnIndex, cell.getContents(), cell.getCellFormat()));
+//                } catch (Exception e) {
+//                    StringWriter sw = new StringWriter();
+//                    PrintWriter pw = new PrintWriter(sw);
+//                    e.printStackTrace(pw);
+//                    logger.error(sw.toString());
+//                }
+//            }
+//        }
     }
 
     /**

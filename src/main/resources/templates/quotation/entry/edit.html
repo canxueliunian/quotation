@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="id" name="id" th:value="${entry.id}" type="hidden">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">父id：</label>
+                            <div class="col-sm-8">
+                                <input id="parentid" name="parentid" th:value="${entry.parentid}" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">项目名称：</label>
+                            <div class="col-sm-8">
+                                <input id="entryname" name="entryname" th:value="${entry.entryname}"
+                                       class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">项目类型：</label>
+                            <div class="col-sm-8">
+                                <input id="packagetype" name="packagetype" th:value="${entry.packagetype}"
+                                       class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">条目类型：</label>
+                            <div class="col-sm-8">
+                                <input id="entrytype" name="entrytype" th:value="${entry.entrytype}"
+                                       class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">频率次数：</label>
+                            <div class="col-sm-8">
+                                <input id="ratenum" name="ratenum" th:value="${entry.ratenum}" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">频率：</label>
+                            <div class="col-sm-8">
+                                <input id="ratestring" name="ratestring" th:value="${entry.ratestring}"
+                                       class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">频率类型 1为每日, 2 为每周：</label>
+                            <div class="col-sm-8">
+                                <input id="ratetype" name="ratetype" th:value="${entry.ratetype}" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">花费时间：</label>
+                            <div class="col-sm-8">
+                                <input id="spendtime" name="spendtime" th:value="${entry.spendtime}"
+                                       class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">花费金额：</label>
+                            <div class="col-sm-8">
+                                <input id="spendpay" name="spendpay" th:value="${entry.spendpay}" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">状态</label>
+                            <div class="col-sm-8">
+                                <input id="status" name="status" th:value="${entry.status}" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">创建时间：</label>
+                            <div class="col-sm-8">
+                                <input id="gmtcreate" name="gmtcreate"
+                                       th:value="${entry.gmtcreate} eq null ? '' : ${#dates.format(entry.gmtcreate, 'yyyy-MM-dd HH:mm:ss')}"
+                                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">修改时间：</label>
+                            <div class="col-sm-8">
+                                <input id="gmtmodify" name="gmtmodify"
+                                       th:value="${entry.gmtmodify} eq null ? '' : ${#dates.format(entry.gmtmodify, 'yyyy-MM-dd HH:mm:ss')}"
+                                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script src="//s.xlongwei.com/res/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/js/appjs/quotation/entry/edit.js">
+</script>
+</body>
+</html>

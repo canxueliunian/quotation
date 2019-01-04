@@ -48,12 +48,7 @@ LEFT JOIN
 db_re_item_entry re
 on
 en.id = re.entryId
-
-
 ) entry on
 item.id = entry.itemId
-
-
-;
     </select>
 </mapper>

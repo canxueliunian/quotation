@@ -1,5 +1,6 @@
 package com.ifast.common.utils;
 
+import com.google.common.base.CaseFormat;
 import com.ifast.common.config.Constant;
 import com.ifast.common.domain.ConfigDO;
 import com.ifast.common.exception.IFastException;
@@ -54,7 +55,7 @@ public class GenUtils {
      */
 
     public static void generatorCode(Map<String, String> table, List<Map<String, String>> columns,
-            ZipOutputStream zip) {
+                                     ZipOutputStream zip) {
         // 配置信息
         Map<String, String> config = getConfig();
         // 表信息
@@ -71,9 +72,9 @@ public class GenUtils {
         Set<String> dataTypes = new HashSet<>(), columnNames = new HashSet<>();
         List<String> baseColumnNames = Arrays.asList("deleted", "version", "createAt", "createBy", "updateAt", "updateBy");
         for (Map<String, String> column : columns) {
-        	columnNames.add(column.get("columnName"));
-        	if(baseColumnNames.contains(column.get("columnName"))) continue;
-        	
+            columnNames.add(column.get("columnName"));
+            if (baseColumnNames.contains(column.get("columnName"))) continue;
+
             ColumnDO columnDO = new ColumnDO();
             columnDO.setColumnName(column.get("columnName"));
             columnDO.setDataType(column.get("dataType"));
@@ -83,7 +84,6 @@ public class GenUtils {
             // 列名转换成Java属性名
             String attrName = columnToJava(columnDO.getColumnName());
             columnDO.setAttrName(attrName);
-            columnDO.setAttrname(StringUtils.uncapitalize(attrName));
 
             // 列的数据类型，转换成Java类型
             String attrType = config.get(columnDO.getDataType());
@@ -163,7 +163,13 @@ public class GenUtils {
      * 列名转换成Java属性名
      */
     public static String columnToJava(String columnName) {
-        return WordUtils.capitalizeFully(columnName, new char[] { '_' }).replace("_", "");
+        if (columnName.contains("_")) {
+            return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, columnName);
+        } else {
+            String uncapitalize = StringUtils.uncapitalize(columnName);
+            return uncapitalize;
+        }
+
     }
 
     /**

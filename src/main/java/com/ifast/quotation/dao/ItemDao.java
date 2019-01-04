@@ -16,4 +16,6 @@ public interface ItemDao extends BaseDao<ItemDO> {
     boolean insertLink(ItemDO entity);
 
     Long selectEntryId(@Param("itemId") Long itemId);
+
+    ItemDO getWholeItemById(Long itemId);
 }

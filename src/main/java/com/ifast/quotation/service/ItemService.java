@@ -11,5 +11,6 @@ import com.ifast.common.base.CoreService;
  * <small> 2019-01-03 13:47:22 | canxue</small>
  */
 public interface ItemService extends CoreService<ItemDO> {
-    
+
+    ItemDO getWholeItemById(Long itemId);
 }

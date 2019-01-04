@@ -48,3 +48,45 @@
 > 　　　 　　　ﾄ-,/　|___./
 > 　　　 　　　'ｰ'　　!_,.:  
 
+
+
+关于前端部分: 
+显示映射:
+ {
+                        field: 'onoff',
+                        title: '状态',
+                        formatter : function (value, row, index) {
+                            if (row['onoff'] == 0) {
+                                return '正常';
+                            }
+                            if (row['onoff'] == 1) {
+                                return '关闭';
+                            }
+                            return value;
+                        }
+                    },
+  修改部分:
+  单选按钮样式:
+   <div class="form-group">
+                              <label class="col-sm-3 control-label">清洁师类型：</label>
+                              <div class="col-sm-8">
+                                  <input id="type" th:value="${worker.workType}" class="form-control" type="hidden">
+                                  <select class="form-control" id="workType" name="workType" style="width: 100%">
+                                      <option value="1">
+                                          保洁
+                                      </option>
+                                      <option value="2">
+                                          领班&保洁
+                                      </option>
+                                  </select>
+                              </div>
+                          </div>
+  
+  
+  
+  
+  下拉框样式:
+  
+  
+  
+  开关demo代码

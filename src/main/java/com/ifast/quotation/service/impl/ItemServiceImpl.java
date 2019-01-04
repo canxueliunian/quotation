@@ -44,24 +44,25 @@ public class ItemServiceImpl extends CoreServiceImpl<ItemDao, ItemDO> implements
      * @param entity
      * @return
      */
-
-    @Override
-    public boolean updateById(ItemDO entity) {
-        ItemDO oldItemDO = baseMapper.selectById(entity.getId());
-        Long entryId = baseMapper.selectEntryId(entity.getId());
-        EntryDO entryDO = entryDao.selectById(entryId);
-        boolean isSame = isSame(oldItemDO, entity, entryDO);
-        if (isSame) {
-            return super.updateById(entity);
-        } else {
-            entryDao.updateById(entryDO);
-            return super.updateById(entity);
-        }
-    }
+//todo 将该部分代码转移到entry中去
+//    @Override
+//    public boolean updateById(ItemDO entity) {
+//        ItemDO oldItemDO = baseMapper.selectById(entity.getId());
+//        Long entryId = baseMapper.selectEntryId(entity.getId());
+//        EntryDO entryDO = entryDao.selectById(entryId);
+//        boolean isSame = isSame(oldItemDO, entity, entryDO);
+//        if (isSame) {
+//            return super.updateById(entity);
+//        } else {
+//            entryDao.updateById(entryDO);
+//            return super.updateById(entity);
+//        }
+//    }
 
     /**
      * 普通的删除操作
      * 删除操作,同时修改entry对应的值
+     *
      * @param id
      * @return
      */
@@ -82,7 +83,7 @@ public class ItemServiceImpl extends CoreServiceImpl<ItemDao, ItemDO> implements
      * 判断新旧对象是否发生时间以及金额上的修改, 为发生返回true
      * 发生返回fasle
      * 并重新设置entry对应的值
-     *
+     * <p>
      * 如果是多选包的话, 要同时维护上面层级的内容
      *
      * @param oldItemDO
@@ -116,4 +117,8 @@ public class ItemServiceImpl extends CoreServiceImpl<ItemDao, ItemDO> implements
     }
 
 
+    @Override
+    public ItemDO getWholeItemById(Long itemId) {
+        return baseMapper.getWholeItemById(itemId);
+    }
 }

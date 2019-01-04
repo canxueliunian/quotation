@@ -3,6 +3,32 @@
 
 <mapper namespace="com.ifast.quotation.dao.ItemDao">
 
+    <!-- 开启二级缓存 -->
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!--&lt;!&ndash; 通用查询映射结果 &ndash;&gt;-->
+    <resultMap id="BaseResultMap" type="com.ifast.quotation.domain.ItemDO" autoMapping="true">
+        <id column="id" property="id"/>
+        <result column="itemName" property="itemname"/>
+        <result column="packageType" property="packagetype"/>
+        <result column="onOff" property="onoff"/>
+        <result column="spendTime" property="spendtime"/>
+        <result column="spendPay" property="spendpay"/>
+        <result column="status" property="status"/>
+        <result column="gmtCreate" property="gmtcreate"/>
+        <result column="gmtModify" property="gmtmodify"/>
+        <collection property="entryDOList" ofType="com.ifast.quotation.domain.EntryDO" autoMapping="true">
+            <id column="id" property="id"/>
+
+        </collection>
+
+    </resultMap>
+
+    <!--&lt;!&ndash; 通用查询结果列 &ndash;&gt;-->
+    <!--<sql id="Base_Column_List">-->
+    <!--id, itemName, packageType, onOff, spendTime, spendPay, status, gmtCreate, gmtModify-->
+    <!--</sql>-->
+
     <insert id="insertLink">
         insert into db_re_item_entry(entryId,itemId)
         values( #{entityId},#{itemId})
@@ -10,5 +36,24 @@
     <select id="selectEntryId" resultType="java.lang.Long">
         select entryId from db_re_item_entry
         where itemId =#{itemId }
+    </select>
+    <!--todo 处理-->
+    <select id="getWholeItemById" resultMap="BaseResultMap">
+      select * from db_item item
+left join
+(
+
+select en.*,re.itemId  from db_entry en
+LEFT JOIN
+db_re_item_entry re
+on
+en.id = re.entryId
+
+
+) entry on
+item.id = entry.itemId
+
+
+;
     </select>
 </mapper>

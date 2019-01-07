@@ -54,10 +54,6 @@ function load() {
                     {
                         checkbox : true
                     },
-                    {
-                        field : 'id',
-                        title : 'id'
-                    },
 
                     {
                         field : 'entryname',

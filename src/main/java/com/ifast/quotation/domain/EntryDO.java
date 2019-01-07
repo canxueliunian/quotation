@@ -3,6 +3,7 @@ package com.ifast.quotation.domain;
 import java.util.Date;
 import java.math.BigDecimal;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -79,5 +80,7 @@ public class EntryDO extends Model<EntryDO> {
     /** 修改时间 */
 	@Excel(name = "${field.comment}")
     private Date gmtmodify;
+	@TableField(exist = false)
+	private Long  ItemId;
 
 }

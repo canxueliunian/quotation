@@ -64,9 +64,14 @@ public class EntryController extends AdminBaseController {
 	@GetMapping("/edit/{id}")
 	@RequiresPermissions("quotation:entry:edit")
 	String edit(@PathVariable("id") Long id,Model model){
+	    try{
 		EntryDO entry = entryService.getById(id);
 		model.addAttribute("entry", entry);
-	    return "quotation/entry/edit";
+	    return "quotation/entry/edit";}catch (Exception e){
+	        e.printStackTrace();
+        }
+        return "";
+
 	}
 	
 	@Log("添加条目信息")
@@ -74,6 +79,7 @@ public class EntryController extends AdminBaseController {
 	@PostMapping("/save")
 	@RequiresPermissions("quotation:entry:add")
 	public Result<String> save( EntryDO entry){
+
 		entryService.save(entry);
         return Result.ok();
 	}

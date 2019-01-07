@@ -3,4 +3,16 @@
 
 <mapper namespace="com.ifast.quotation.dao.EntryDao">
 
+
+    <insert id="insertLink">
+        insert into db_re_item_entry(entryId,itemId)
+        values( #{entityId},#{id})
+    </insert>
+    <select id="selectItemIdByEntryId" resultType="java.lang.Long">
+           select itemId from db_re_item_entry
+        where entryId =#{itemId}
+
+    </select>
+
+
 </mapper>

@@ -14,8 +14,7 @@ import java.util.List;
  * <small> 2019-01-03 13:47:22 | canxue</small>
  */
 public interface ItemDao extends BaseDao<ItemDO> {
-// 插入关联关系
-    boolean insertLink(ItemDO entity);
+
 
     List<Long> selectEntryId(@Param("itemId") Long itemId);
 

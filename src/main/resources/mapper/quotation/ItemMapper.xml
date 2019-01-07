@@ -29,10 +29,7 @@
     <!--id, itemName, packageType, onOff, spendTime, spendPay, status, gmtCreate, gmtModify-->
     <!--</sql>-->
 
-    <insert id="insertLink">
-        insert into db_re_item_entry(entryId,itemId)
-        values( #{entityId},#{itemId})
-    </insert>
+
     <select id="selectEntryId" resultType="java.lang.Long">
         select entryId from db_re_item_entry
         where itemId =#{itemId}

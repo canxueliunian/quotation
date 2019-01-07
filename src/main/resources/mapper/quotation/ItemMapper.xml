@@ -7,22 +7,22 @@
     <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
 
     <!--&lt;!&ndash; 通用查询映射结果 &ndash;&gt;-->
-    <resultMap id="BaseResultMap" type="com.ifast.quotation.domain.ItemDO" autoMapping="true">
-        <id column="id" property="id"/>
-        <result column="itemName" property="itemname"/>
-        <result column="packageType" property="packagetype"/>
-        <result column="onOff" property="onoff"/>
-        <result column="spendTime" property="spendtime"/>
-        <result column="spendPay" property="spendpay"/>
-        <result column="status" property="status"/>
-        <result column="gmtCreate" property="gmtcreate"/>
-        <result column="gmtModify" property="gmtmodify"/>
-        <collection property="entryDOList" ofType="com.ifast.quotation.domain.EntryDO" autoMapping="true">
-            <id column="id" property="id"/>
+    <!--<resultMap id="BaseResultMap" type="com.ifast.quotation.domain.ItemDO" autoMapping="true">-->
+        <!--<id column="id" property="id"/>-->
+        <!--<result column="itemName" property="itemname"/>-->
+        <!--<result column="packageType" property="packagetype"/>-->
+        <!--<result column="onOff" property="onoff"/>-->
+        <!--<result column="spendTime" property="spendtime"/>-->
+        <!--<result column="spendPay" property="spendpay"/>-->
+        <!--<result column="status" property="status"/>-->
+        <!--<result column="gmtCreate" property="gmtcreate"/>-->
+        <!--<result column="gmtModify" property="gmtmodify"/>-->
+        <!--<collection property="entryDOList" ofType="com.ifast.quotation.domain.EntryDO" autoMapping="true">-->
+            <!--<id column="id" property="id"/>-->
 
-        </collection>
+        <!--</collection>-->
 
-    </resultMap>
+    <!--</resultMap>-->
 
     <!--&lt;!&ndash; 通用查询结果列 &ndash;&gt;-->
     <!--<sql id="Base_Column_List">-->

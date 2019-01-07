@@ -29,7 +29,7 @@ import com.ifast.common.annotation.*;
 @SuppressWarnings("serial")
 @TableName("${tableName}")
 @EqualsAndHashCode(callSuper=true) 
-public class ${className}DO extends Model<${className}> {
+public class ${className}DO extends Model<${className}DO> {
 	@TableId
 	@Excel(name = "id")
 	private Long id;

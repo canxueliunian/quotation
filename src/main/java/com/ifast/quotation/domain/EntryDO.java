@@ -72,6 +72,8 @@ public class EntryDO extends Model<EntryDO> {
     /** 0 正常 1冻结 */
 	@Excel(name = "${field.comment}")
     private Integer status;
+	@Excel(name = "清洁方式")
+	private String cleantype;
 
     /** 创建时间 */
 	@Excel(name = "${field.comment}")

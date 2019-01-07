@@ -12,6 +12,7 @@ import com.ifast.common.base.CoreServiceImpl;
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <pre>
@@ -69,7 +70,8 @@ public class ItemServiceImpl extends CoreServiceImpl<ItemDao, ItemDO> implements
     @Override
     public boolean removeById(Serializable id) {
         ItemDO oldItemDO = baseMapper.selectById(id);
-        Long entryId = baseMapper.selectEntryId(Long.valueOf((String) id));
+//        Long entryId = baseMapper.selectEntryId(Long.valueOf((String) id));
+        Long entryId = null;
         EntryDO entryDO = entryDao.selectById(entryId);
         ItemDO itemDO = new ItemDO();
         itemDO.setSpendpay(new BigDecimal(0));
@@ -116,9 +118,19 @@ public class ItemServiceImpl extends CoreServiceImpl<ItemDao, ItemDO> implements
         return flag;
     }
 
-
+    /**
+     * todo 目前先使用代码的关联查询, 之后有时间的话,将其改为mapper查询
+     *
+     * @param itemId
+     * @return
+     */
     @Override
     public ItemDO getWholeItemById(Long itemId) {
-        return baseMapper.getWholeItemById(itemId);
+        ItemDO itemDO = baseMapper.selectById(itemId);
+        List<Long> entryIds = baseMapper.selectEntryId(itemId);
+        List<EntryDO> entryDOS = entryDao.selectBatchIds(entryIds);
+        itemDO.setEntryDOList(entryDOS);
+        return itemDO;
+//        return baseMapper.getWholeItemById(itemId);
     }
 }

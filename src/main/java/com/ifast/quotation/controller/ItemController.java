@@ -9,19 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ifast.common.annotation.Log;
 import com.ifast.common.base.AdminBaseController;
 import com.ifast.quotation.domain.ItemDO;
 import com.ifast.quotation.service.ItemService;
 import com.ifast.common.utils.Result;
-
-import javax.annotation.Resource;
 
 /**
  * <pre>
@@ -96,13 +89,17 @@ public class ItemController extends AdminBaseController {
     @RequestMapping("/viewdetail")
     @RequiresPermissions("quotation:item:edit")
     public Result<ItemDO> viewdetail(Long itemId) {
-        ItemDO itemDO =   itemService.getWholeItemById(itemId);
+        ItemDO itemDO = itemService.getWholeItemById(itemId);
 
 
-        return true ? Result.ok() : Result.fail();
+        return Result.ok(itemDO);
     }
 
-
+    /**
+     * 启用停用项目目前不需要关联下一级的操作
+     * @param itemDO
+     * @return
+     */
     @Log("启动停用条目")
     @PostMapping(value = "/changeonOff")
     @ResponseBody
@@ -124,6 +121,9 @@ public class ItemController extends AdminBaseController {
     }
 
 }
+/**
+ * todo 需求待定: 删除操作, 将关联的下一级的所有内容也一同进行删除.
+ */
 /**
  * 暂时不用的内容
  */

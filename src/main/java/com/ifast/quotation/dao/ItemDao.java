@@ -4,6 +4,8 @@ import com.ifast.quotation.domain.ItemDO;
 import com.ifast.common.base.BaseDao;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 
  * <pre>
@@ -15,7 +17,7 @@ public interface ItemDao extends BaseDao<ItemDO> {
 // 插入关联关系
     boolean insertLink(ItemDO entity);
 
-    Long selectEntryId(@Param("itemId") Long itemId);
+    List<Long> selectEntryId(@Param("itemId") Long itemId);
 
-    ItemDO getWholeItemById(Long itemId);
+//    ItemDO getWholeItemById(Long itemId);
 }

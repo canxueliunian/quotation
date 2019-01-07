@@ -35,20 +35,20 @@
     </insert>
     <select id="selectEntryId" resultType="java.lang.Long">
         select entryId from db_re_item_entry
-        where itemId =#{itemId }
+        where itemId =#{itemId}
     </select>
     <!--todo 处理-->
-    <select id="getWholeItemById" resultMap="BaseResultMap">
-      select * from db_item item
-left join
-(
+    <!--<select id="getWholeItemById" resultMap="BaseResultMap">-->
+      <!--select * from db_item item-->
+<!--left join-->
+<!--(-->
 
-select en.*,re.itemId  from db_entry en
-LEFT JOIN
-db_re_item_entry re
-on
-en.id = re.entryId
-) entry on
-item.id = entry.itemId
-    </select>
+<!--select en.*,re.itemId  from db_entry en-->
+<!--LEFT JOIN-->
+<!--db_re_item_entry re-->
+<!--on-->
+<!--en.id = re.entryId-->
+<!--) entry on-->
+<!--item.id = entry.itemId-->
+    <!--</select>-->
 </mapper>

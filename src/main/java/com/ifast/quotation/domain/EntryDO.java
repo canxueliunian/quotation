@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.ifast.common.base.BaseDO;
 
 import lombok.Data;
@@ -26,7 +27,7 @@ rateString : 为通过上面的rate 两个字段生成的额每周一次, 每日
 @SuppressWarnings("serial")
 @TableName("db_entry")
 @EqualsAndHashCode(callSuper=true) 
-public class EntryDO extends BaseDO {
+public class EntryDO extends Model<EntryDO> {
 	@TableId
 	@Excel(name = "id")
 	private Long id;

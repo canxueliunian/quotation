@@ -53,7 +53,8 @@ public class EntryController extends AdminBaseController {
         IPage<EntryDO> page = entryService.page(getPage(EntryDO.class), wrapper);
         return Result.ok(page);
 	}
-	
+
+
 	@GetMapping("/add")
 	@RequiresPermissions("quotation:entry:add")
 	String add(){
